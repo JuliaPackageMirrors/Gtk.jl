@@ -221,6 +221,9 @@ function get_type_decl(name,iname,gtyp,gtype_decl)
         macro $einame(args...)
             Expr(:call, $ename, map(esc,args)...)
         end
+        function $einame(args...)
+            $ename(args...)
+        end
         $gtype_decl
         nothing
     end
