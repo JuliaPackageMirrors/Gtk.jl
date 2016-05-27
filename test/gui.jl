@@ -1,9 +1,9 @@
 ## Tests
-using Gtk.ShortNames, Gtk.GConstants, Gtk.Graphics
+using Gtk, Gtk.ShortNames, Gtk.GConstants, Gtk.Graphics
 import Gtk.deleteat!
 
 ## Window
-w = @Window("Window", 400, 300) |> showall
+w = Window("Window", 400, 300) |> showall
 @assert width(w) == 400
 @assert height(w) == 300
 @assert size(w) == (400, 300)
@@ -29,38 +29,38 @@ gc(); yield(); gc()
 @assert w.value === nothing
 
 ## Frame
-w = @Window(
-    @Frame(),
+w = Window(
+    Frame(),
     "Frame", 400, 400)
 @assert size(w) == (400, 400)
 showall(w)
 destroy(w)
 
 ## Initially Hidden Canvas
-nb = @Notebook()
-vbox = @Box(:v)
-c = @Canvas()
+nb = Notebook()
+vbox = GtkBox(:v)
+c = Canvas()
 push!(nb, vbox, "A")
 push!(nb, c, "B")
-w = @Window("TestDataViewer",600,600)
+w = Window("TestDataViewer",600,600)
 push!(w,nb)
 showall(w)
 destroy(w)
 
 # Labelframe
-f = @Frame("Label")
-w = @Window(f, "Labelframe", 400, 400)
+f = Frame("Label")
+w = Window(f, "Labelframe", 400, 400)
 setproperty!(f,:label,"new label")
 @assert getproperty(f,:label,AbstractString) == "new label"
 showall(w)
 destroy(w)
 
 ## notebook
-nb = @Notebook()
-w = push!(@Window("Notebook"),nb)
-push!(nb, @Button("o_ne"), "tab _one")
-push!(nb, @Button("t_wo"), "tab _two")
-push!(nb, @Button("th_ree"), "tab t_hree")
+nb = Notebook()
+w = push!(Window("Notebook"),nb)
+push!(nb, Button("o_ne"), "tab _one")
+push!(nb, Button("t_wo"), "tab _two")
+push!(nb, Button("th_ree"), "tab t_hree")
 push!(nb, "fo_ur", "tab _four")
 showall(w)
 @assert length(nb) == 4
@@ -70,34 +70,34 @@ showall(w)
 destroy(w)
 
 ## Panedwindow
-w = @Window("Panedwindow", 400, 400)
-pw = @Paned(:h)
-pw2 = @Paned(:v)
+w = Window("Panedwindow", 400, 400)
+pw = Paned(:h)
+pw2 = Paned(:v)
 push!(w, pw)
-push!(pw, @Button("one"))
+push!(pw, Button("one"))
 push!(pw, pw2)
-push!(pw2,@Button("two"))
-push!(pw2,@Button("three"))
+push!(pw2,Button("two"))
+push!(pw2,Button("three"))
 showall(w)
 destroy(w)
 
 ## example of last in first covered
 ## Create this GUI, then shrink window with the mouse
-f = @Box(:v)
-w = @Window(f, "Last in, first covered", 400, 400)
+f = GtkBox(:v)
+w = Window(f, "Last in, first covered", 400, 400)
 
-g1 = @Box(:h)
-g2 = @Box(:h)
+g1 = GtkBox(:h)
+g2 = GtkBox(:h)
 push!(f,g1)
 push!(f,g2)
 
-b11 = @Button("first")
+b11 = Button("first")
 push!(g1, b11)
-b12 = @Button("second")
+b12 = Button("second")
 push!(g1, b12)
-b21 = @Button("first")
+b21 = Button("first")
 push!(g2, b21)
-b22 = @Button("second")
+b22 = Button("second")
 push!(g2, b22)
 
 ## Iteration and toplevel
@@ -118,25 +118,25 @@ showall(w)
 destroy(w)
 
 ## ButtonBox
-bb = @ButtonBox(:h)
-w = @Window(bb, "ButtonBox")
-cancel = @Button("Cancel")
-ok = @Button("OK")
+bb = ButtonBox(:h)
+w = Window(bb, "ButtonBox")
+cancel = Button("Cancel")
+ok = Button("OK")
 push!(bb, cancel)
 push!(bb, ok)
 
 # Expander
 delete!(w, bb)
-ex = @Expander(bb, "Some buttons")
+ex = Expander(bb, "Some buttons")
 push!(w, ex)
 showall(w)
 destroy(w)
 
 ## Grid
-grid = @Table(3,3)
-w = @Window(grid, "Grid", 400, 400)
-grid[2,2] = @Button("2,2")
-grid[2,3] = @Button("2,3")
+grid = Table(3,3)
+w = Window(grid, "Grid", 400, 400)
+grid[2,2] = Button("2,2")
+grid[2,3] = Button("2,3")
 grid[1,1] = "grid"
 showall(w)
 destroy(w)
@@ -145,10 +145,10 @@ destroy(w)
 ## Widgets
 
 ## button, label
-w = @Window("Widgets")
-f = @Box(:v); push!(w,f)
-l = @Label("label"); push!(f,l)
-b = @Button("button"); push!(f,b)
+w = Window("Widgets")
+f = GtkBox(:v); push!(w,f)
+l = Label("label"); push!(f,l)
+b = Button("button"); push!(f,b)
 
 setproperty!(l,:label,"new label")
 @assert getproperty(l,:label,AbstractString) == "new label"
@@ -182,14 +182,14 @@ destroy(w)
 icon = Array(Gtk.RGB, 40, 20)
 fill!(icon, Gtk.RGB(0,0xff,0))
 icon[5:end-5, 3:end-3] = Gtk.RGB(0,0,0xff)
-b = @Button(@Image(@Pixbuf(data=icon, has_alpha=false)))
-w = @Window(b, "Icon button", 60, 40)
+b = Button(Image(@Pixbuf(data=icon, has_alpha=false)))
+w = Window(b, "Icon button", 60, 40)
 showall(w)
 destroy(w)
 
 ## checkbox
-w = @Window("Checkbutton")
-check = @CheckButton("check me"); push!(w,check)
+w = Window("Checkbutton")
+check = CheckButton("check me"); push!(w,check)
 setproperty!(check,:active,true)
 @assert getproperty(check,:active,AbstractString) == "TRUE"
 setproperty!(check,:label,"new label")
@@ -202,12 +202,12 @@ showall(w)
 destroy(w)
 
 ## radio
-choices = ["choice one", "choice two", "choice three", @RadioButton("choice four"), @Label("choice five")]
-w = @Window("Radio")
-f = @Box(:v); push!(w,f)
+choices = ["choice one", "choice two", "choice three", RadioButton("choice four"), Label("choice five")]
+w = Window("Radio")
+f = GtkBox(:v); push!(w,f)
 r = Array(RadioButton,3)
-r[1] = @RadioButton(choices[1]); push!(f,r[1])
-r[2] = @RadioButton(r[1],choices[2]); push!(f,r[2])
+r[1] = RadioButton(choices[1]); push!(f,r[1])
+r[2] = RadioButton(r[1],choices[2]); push!(f,r[2])
 r[3] = @RadioButton(r[2],choices[3],active=true); push!(f,r[3])
 @assert [getproperty(b,:active,Bool) for b in r] == [false, false, true]
 setproperty!(r[1],:active,true)
@@ -229,12 +229,12 @@ end
 @assert setdiff(choices, itms) == [choices[4],]
 @assert setdiff(itms, choices) == ["choice four",]
 @assert getproperty(getproperty(r,:active),:label,AbstractString) == choices[2]
-w = @Window(r,"RadioGroup")|>showall
+w = Window(r,"RadioGroup")|>showall
 destroy(w)
 
 ## ToggleButton
-tb = @ToggleButton("Off")
-w = @Window(tb, "ToggleButton")|>showall
+tb = ToggleButton("Off")
+w = Window(tb, "ToggleButton")|>showall
 function toggled(ptr,evt,widget)
     state = getproperty(widget,:label,AbstractString)
     if state == "Off"
@@ -253,8 +253,8 @@ signal_emit(tb, "button-release-event", Bool, release)
 destroy(w)
 
 ## ToggleButton repeat 1
-tb = @ToggleButton("Off")
-w = @Window(tb, "ToggleButton")|>showall
+tb = ToggleButton("Off")
+w = Window(tb, "ToggleButton")|>showall
 # TODO: uncomment these next lines
 on_signal_button_press(tb) do ptr, evt, widget
     state = getproperty(widget,:label,AbstractString)
@@ -273,8 +273,8 @@ signal_emit(tb, "button-release-event", Bool, release)
 destroy(w)
 
 ## ToggleButton repeat 2
-tb = @ToggleButton("Off")
-w = @Window(tb, "ToggleButton")|>showall
+tb = ToggleButton("Off")
+w = Window(tb, "ToggleButton")|>showall
 signal_connect(tb, :button_press_event) do widget, evt
     state = getproperty(widget,:label,AbstractString)
     if state == "Off"
@@ -292,62 +292,62 @@ signal_emit(tb, "button-release-event", Bool, release)
 destroy(w)
 
 ## LinkButton
-b = @LinkButton("https://github.com/JuliaLang/Gtk.jl", "Gtk.jl")
-w = @Window(b, "LinkButton")|>showall
+b = LinkButton("https://github.com/JuliaLang/Gtk.jl", "Gtk.jl")
+w = Window(b, "LinkButton")|>showall
 destroy(w)
 
 ## VolumeButton
-b = @VolumeButton(0.3)
-w = @Window(b, "VolumeButton", 50, 50)|>showall
+b = VolumeButton(0.3)
+w = Window(b, "VolumeButton", 50, 50)|>showall
 destroy(w)
 
 ## combobox
-combo = @ComboBoxText()
+combo = ComboBoxText()
 choices = ["Strawberry", "Vanilla", "Chocolate"]
 for c in choices
     push!(combo, c)
 end
-w = @Window(combo, "ComboBoxText")|>showall
+w = Window(combo, "ComboGtkBoxText")|>showall
 lsl = ListStoreLeaf(combo)
 @assert length(lsl) == 3
 empty!(combo)
 @assert length(lsl) == 0
 destroy(w)
 
-combo = @ComboBoxText(true)
+combo = ComboBoxText(true)
 for c in choices
     push!(combo, c)
 end
-w = @Window(combo, "ComboBoxText with entry")|>showall
+w = Window(combo, "ComboBoxText with entry")|>showall
 destroy(w)
 
 ## slider/scale
-sl = @Scale(true, 1:10)
-w = @Window(sl, "Scale")|>showall
+sl = Scale(true, 1:10)
+w = Window(sl, "Scale")|>showall
 G_.value(sl, 3)
 @assert G_.value(sl) == 3
-adj = @Adjustment(sl)
+adj = Adjustment(sl)
 @assert getproperty(adj,:value,Float64) == 3
 setproperty!(adj,:upper,11)
 destroy(w)
 
 ## spinbutton
-sp = @SpinButton(1:10)
-w = @Window(sp, "SpinButton")|>showall
+sp = SpinButton(1:10)
+w = Window(sp, "SpinButton")|>showall
 G_.value(sp, 3)
 @assert G_.value(sp) == 3
 destroy(w)
 
 ## progressbar
-pb = @ProgressBar()
-w = @Window(pb, "Progress bar")|>showall
+pb = ProgressBar()
+w = Window(pb, "Progress bar")|>showall
 setproperty!(pb,:fraction,0.7)
 @assert getproperty(pb,:fraction,Float64) == 0.7
 destroy(w)
 
 ## spinner
-s = @Spinner()
-w = @Window(s, "Spinner")|>showall
+s = Spinner()
+w = Window(s, "Spinner")|>showall
 setproperty!(s,:active,true)
 @assert getproperty(s,:active,Bool) == true
 setproperty!(s,:active,false)
@@ -355,8 +355,8 @@ setproperty!(s,:active,false)
 destroy(w)
 
 ## Entry
-e = @Entry()
-w = @Window(e, "Entry")|>showall
+e = Entry()
+w = Window(e, "Entry")|>showall
 setproperty!(e,:text,"initial")
 setproperty!(e,:sensitive,false)
 
@@ -371,13 +371,13 @@ signal_emit(e, :activate, Void)
 destroy(w)
 
 ## Statusbar
-vbox = @Box(:v)
-w = @Window(vbox, "Statusbar")
-sb = @Statusbar()
+vbox = GtkBox(:v)
+w = Window(vbox, "Statusbar")
+sb = Statusbar()
 push!(vbox, sb)
 ctxid = Gtk.context_id(sb, "Statusbar example")
-bpush = @Button("push item")
-bpop = @Button("pop item")
+bpush = Button("push item")
+bpop = Button("pop item")
 push!(vbox, bpush)
 push!(vbox, bpop)
 showall(w)
@@ -398,8 +398,8 @@ destroy(w)
 
 ## Canvas & AspectFrame
 c = Canvas()
-f = @AspectFrame(c, "AspectFrame", 0.5, 1, 0.5)
-w = @Window(f, "Canvas")|>showall
+f = AspectFrame(c, "AspectFrame", 0.5, 1, 0.5)
+w = Window(f, "Canvas")|>showall
 c.draw = function(_)
     ctx = getgc(c)
     set_source_rgb(ctx, 1.0, 0.0, 0.0)
@@ -409,37 +409,37 @@ draw(c)
 destroy(w)
 
 ## Menus
-file = @MenuItem("_File")
-filemenu = @Menu(file)
-new_ = @MenuItem("New")
+file = MenuItem("_File")
+filemenu = Menu(file)
+new_ = MenuItem("New")
 idnew = signal_connect(new_, :activate) do widget
     println("New!")
 end
 push!(filemenu, new_)
-open_ = @MenuItem("Open")
+open_ = MenuItem("Open")
 push!(filemenu, open_)
-push!(filemenu, @SeparatorMenuItem())
-quit = @MenuItem("Quit")
+push!(filemenu, SeparatorMenuItem())
+quit = MenuItem("Quit")
 push!(filemenu, quit)
-mb = @MenuBar()
+mb = MenuBar()
 push!(mb, file)  # notice this is the "File" item, not filemenu
-win = @Window(mb, "Menus", 200, 40)|>showall
+win = Window(mb, "Menus", 200, 40)|>showall
 destroy(win)
 
 ## Popup menu
-contrast = @MenuItem("Adjust contrast...")
-popupmenu = @Menu()
+contrast = MenuItem("Adjust contrast...")
+popupmenu = Menu()
 push!(popupmenu, contrast)
 c = Canvas()
-win = @Window(c, "Popup")|>showall
+win = Window(c, "Popup")|>showall
 showall(popupmenu)
 c.mouse.button3press = (widget,event) -> popup(popupmenu, event)
 destroy(win)
 
 ## Text
-#w = @Window("Text")
+#w = Window("Text")
 #pack_stop_propagate(w)
-#f = @Frame(w); pack(f, {:expand=>true, :fill=>"both"})
+#f = Frame(w); pack(f, {:expand=>true, :fill=>"both"})
 #txt = Text(w)
 #scrollbars_add(f, txt)
 #set_value(txt, "new text\n")
@@ -447,9 +447,9 @@ destroy(win)
 #destroy(w)
 
 ## tree. Listbox
-#w = @Window("Listbox")
+#w = Window("Listbox")
 #pack_stop_propagate(w)
-#f = @Frame(w); pack(f, {:expand=>true, :fill=>"both"})
+#f = Frame(w); pack(f, {:expand=>true, :fill=>"both"})
 #tr = Treeview(f, choices)
 #scrollbars_add(f, tr)
 #set_value(tr, 2)
@@ -459,9 +459,9 @@ destroy(win)
 
 
 ## tree grid
-#w = @Window("Array")
+#w = Window("Array")
 #pack_stop_propagate(w)
-#f = @Frame(w); pack(f, {:expand=>true, :fill=>"both"})
+#f = Frame(w); pack(f, {:expand=>true, :fill=>"both"})
 #tr = Treeview(f, hcat(choices, choices))
 #tree_key_header(tr, "right"); tree_key_width(tr, 50)
 #tree_headers(tr, ["left"], [50])
@@ -472,24 +472,24 @@ destroy(win)
 
 ## Selectors
 import Gtk.GtkFileChooserAction, Gtk.GtkResponseType
-dlg = @FileChooserDialog("Select file", @Null(), GtkFileChooserAction.OPEN,
+dlg = FileChooserDialog("Select file", Null(), GtkFileChooserAction.OPEN,
                         (("_Cancel", GtkResponseType.CANCEL),
                          ("_Open", GtkResponseType.ACCEPT)))
 destroy(dlg)
 
 ## List view
-ls=@ListStore(Int32,Bool)
+ls=ListStore(Int32,Bool)
 push!(ls,(33,true))
 push!(ls,(44,true))
 insert!(ls, 2, (35, false))
-tv=@TreeView(TreeModel(ls))
-r1=@CellRendererText()
-r2=@CellRendererToggle()
-c1=@TreeViewColumn("A", r1, Dict([("text",0)]))
-c2=@TreeViewColumn("B", r2, Dict([("active",1)]))
+tv=TreeView(TreeModel(ls))
+r1=CellRendererText()
+r2=CellRendererToggle()
+c1=TreeViewColumn("A", r1, Dict([("text",0)]))
+c2=TreeViewColumn("B", r2, Dict([("active",1)]))
 push!(tv,c1)
 push!(tv,c2)
-w = @Window(tv, "List View")|>showall
+w = Window(tv, "List View")|>showall
 
 
 ## selection
@@ -506,15 +506,15 @@ destroy(w)
 
 
 ## Tree view
-ts=@TreeStore(AbstractString)
+ts=TreeStore(AbstractString)
 iter1 = push!(ts,("one",))
 iter2 = push!(ts,("two",),iter1)
 iter3 = push!(ts,("three",),iter2)
-tv=@TreeView(TreeModel(ts))
-r1=@CellRendererText()
-c1=@TreeViewColumn("A", r1, Dict([("text",0)]))
+tv=TreeView(TreeModel(ts))
+r1=CellRendererText()
+c1=TreeViewColumn("A", r1, Dict([("text",0)]))
 push!(tv,c1)
-w = @Window(tv, "Tree View")|>showall
+w = Window(tv, "Tree View")|>showall
 
 
 iter = Gtk.iter_from_index(ts, [1])
@@ -526,21 +526,21 @@ destroy(w)
 
 ## Toolbar
 import Gtk.GtkToolbarStyle
-tb1 = @ToolButton("gtk-open")
-tb2 = @ToolButton("gtk-new")
-tb3 = @ToolButton("gtk-media-next")
-toolbar = @Toolbar()
+tb1 = ToolButton("gtk-open")
+tb2 = ToolButton("gtk-new")
+tb3 = ToolButton("gtk-media-next")
+toolbar = Toolbar()
 push!(toolbar,tb1)
 unshift!(toolbar,tb2)
 push!(toolbar,tb3)
-push!(toolbar,@SeparatorToolItem(), @ToggleToolButton("gtk-open"), @MenuToolButton("gtk-new"))
+push!(toolbar,SeparatorToolItem(), ToggleToolButton("gtk-open"), MenuToolButton("gtk-new"))
 G_.style(toolbar,GtkToolbarStyle.BOTH)
-w = @Window(toolbar, "Toolbar")|>showall
+w = Window(toolbar, "Toolbar")|>showall
 destroy(w)
 
 # Canvas mouse callback stack operations
-c = @Canvas()
-w = @Window(c)
+c = Canvas()
+w = Window(c)
 showall(w)
 io = IOBuffer()
 c.mouse.button1press = (widget,evt) -> println(io, "cb1_1")
@@ -575,8 +575,8 @@ destroy(w)
 
 style_file = joinpath(dirname(Base.source_path()), "style_test.css")
 
-l = @Label "I am some large blue text!"
-w = @Window(l)
+l = Label("I am some large blue text!")
+w = Window(l)
 
 screen   = Gtk.GAccessor.screen(w)
 provider = CssProviderLeaf(filename=style_file)
